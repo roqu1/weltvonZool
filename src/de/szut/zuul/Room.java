@@ -66,6 +66,12 @@ public class Room
         if(down != null) {
             southExit = down;
         }
+        if(up != null) {
+            eastExit = up;
+        }
+        if(down != null) {
+            westExit = down;
+        }
     }
 
     /**
@@ -91,5 +97,27 @@ public class Room
         if(this.northExit!= null)
             exits.append("down");
         return exits.toString();
+    }
+
+    public Room getExit(String direction) {
+        if(direction.equals("north")){
+            return this.northExit;
+        }
+        if(direction.equals("south")){
+            return this.southExit;
+        }
+        if(direction.equals("east")){
+            return this.eastExit;
+        }
+        if(direction.equals("west")){
+            return this.westExit;
+        }
+        if(direction.equals("up")){
+            return this.upExit;
+        }
+        if(direction.equals("down")){
+            return this.downExit;
+        }
+        return null;
     }
 }
