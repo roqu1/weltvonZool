@@ -80,6 +80,10 @@ public class Room {
         return description;
     }
 
+    public String getLongDescription() {
+        return "You are " + this.description + ".\n" + "Exits: " + exitsToString();
+    }
+
     public String exitsToString() {
         StringBuilder exits = new StringBuilder("");
         if (getExit("north") != null)
