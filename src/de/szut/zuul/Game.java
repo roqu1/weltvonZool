@@ -118,6 +118,8 @@ public class Game {
             printHelp();
         } else if (commandWord.equals("go")) {
             goRoom(command);
+        } else if (commandWord.equals("look")) {
+            look();
         } else if (commandWord.equals("quit")) {
             wantToQuit = quit(command);
         }
@@ -134,10 +136,10 @@ public class Game {
      */
     private void printHelp() {
         System.out.println("You are lost. You are alone. You wander");
-        System.out.println("through the jungle. At once there is a glade. On it there a buildings...");
+        System.out.println("around at the market square.");
         System.out.println();
         System.out.println("Your command words are:");
-        System.out.println("   go quit help");
+        System.out.println(parser.showCommands());
     }
 
     /**
@@ -177,5 +179,11 @@ public class Game {
         } else {
             return true; // signal that we want to quit
         }
+    }
+
+    private String look() { // Vielleicht nochmal überarbeiten
+        String description = currentRoom.getLongDescription();
+        System.out.println(description);
+        return description;
     }
 }
