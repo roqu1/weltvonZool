@@ -63,6 +63,17 @@ public class Game {
         basement.setExits(null, null, null, secretPassage, templePyramid, null); // Keller
 
         currentRoom = marketsquare; // start game on marketsquare
+
+        // add items to rooms
+        marketsquare.putItem("Bogen", "Ein Bogen aus Holz", 0.5);
+        cave.putItem("Schatz", "eine kleine Schatztruhe mit Münzen", 7.5);
+        wizardRoom.putItem("Pfeile", "Ein Köcher mit diversen Pfeilen", 1.0);
+        jungle.putItem("Pflanze", "eine Heilpflanze", 0.5);
+        jungle.putItem("Kakao", "ein kleiner Kakaobaum", 5);
+        sacrificialSite.putItem("Messer", "ein sehr scharfes, großes Messer", 1);
+        hut.putItem("Speer", "ein Speer mit dazugehöriger Schleuder", 5.0);
+        tavern.putItem("Nahrung", "ein Teller mit deftigem Fleisch und Maisbrei", 0.5);
+        basement.putItem("Schmuck", "ein sehr hübscher Kopfschmuck", 1);
     }
 
     /**

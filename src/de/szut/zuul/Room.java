@@ -19,6 +19,7 @@ import java.util.HashMap;
 public class Room {
     private String description;
     private HashMap<String, Room> exits;
+    private HashMap<String, Item> items;
 
     /**
      * Create a room described "description". Initially, it has
@@ -30,6 +31,7 @@ public class Room {
     public Room(String description) {
         this.description = description;
         this.exits = new HashMap<String, Room>();
+        items = new HashMap<>();
     }
 
     public void setExit(String direction, Room neighbor) {
@@ -80,8 +82,19 @@ public class Room {
         return description;
     }
 
+    public String getItemsDescription() {
+        StringBuilder itemsDescription = new StringBuilder();
+
+        for (Item item : this.items.values()) {
+            itemsDescription
+                    .append("- " + item.getName() + ", " + item.getDescription() + ", " + item.getWeight() + "kg\n");
+        }
+
+        return itemsDescription.toString();
+    }
+
     public String getLongDescription() {
-        return "You are " + this.description + ".\n" + "Exits: " + exitsToString();
+        return this.description + ".\n" + "Items: " + getItemsDescription() + "Exits: " + exitsToString();
     }
 
     public String exitsToString() {
@@ -103,5 +116,18 @@ public class Room {
 
     public Room getExits(String direction) {
         return this.exits.get(direction);
+    }
+
+    public void putItem(String name, String description, double weight) {
+        Item newItem = new Item(name, description, weight);
+        this.items.put(name, newItem);
+    }
+
+    public Item getItem(String itemName) {
+        return this.items.get(itemName);
+    }
+
+    public Item removeItem(String itemName) {
+        return this.items.remove(itemName);
     }
 }
