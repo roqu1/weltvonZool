@@ -128,6 +128,11 @@ public class Room {
     }
 
     public Item removeItem(String itemName) {
-        return this.items.remove(itemName);
+        if (this.items.containsKey(itemName)) {
+            return this.items.remove(itemName);
+        } else {
+            return null;
+        }
     }
+
 }

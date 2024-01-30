@@ -19,12 +19,13 @@ package de.szut.zuul;
 
 public class Game {
     private Parser parser;
-    private Room currentRoom;
+    private Player player;
 
     /**
      * Create the game and initialise its internal map.
      */
     public Game() {
+        player = new Player();
         createRooms();
         parser = new Parser();
     }
@@ -62,7 +63,7 @@ public class Game {
         wizardRoom.setExits(null, null, null, null, null, templePyramid); // Zimmer des Zauberers
         basement.setExits(null, null, null, secretPassage, templePyramid, null); // Keller
 
-        currentRoom = marketsquare; // start game on marketsquare
+        player.goTo(marketsquare);// start game on marketsquare
 
         // add items to rooms
         marketsquare.putItem("Bogen", "Ein Bogen aus Holz", 0.5);
@@ -106,7 +107,7 @@ public class Game {
     }
 
     private void printRoomInformation() {
-        System.out.println("You are " + currentRoom.getLongDescription());
+        System.out.println("You are " + player.getRoom().getLongDescription());
         System.out.println();
     }
 
@@ -133,6 +134,12 @@ public class Game {
             look();
         } else if (commandWord.equals("quit")) {
             wantToQuit = quit(command);
+        } else if (commandWord.equals("take")) {
+            takeItem(command);
+            look();
+        } else if (commandWord.equals("drop")) {
+            dropItem(command);
+            look();
         }
 
         return wantToQuit;
@@ -167,12 +174,12 @@ public class Game {
         String direction = command.getSecondWord();
 
         // Try to leave current room.
-        Room nextRoom = currentRoom.getExit(direction);
+        Room nextRoom = player.getRoom().getExit(direction);
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
         } else {
-            currentRoom = nextRoom;
+            player.goTo(nextRoom);
             printRoomInformation();
         }
     }
@@ -193,8 +200,43 @@ public class Game {
     }
 
     private String look() { // Vielleicht nochmal überarbeiten
-        String description = currentRoom.getLongDescription();
+        String description = player.getRoom().getLongDescription();
         System.out.println(description);
         return description;
+    }
+
+    private void takeItem(Command command) {
+        if (!command.hasSecondWord()) {
+            System.out.println("What you want to take?");
+            return;
+        }
+
+        String itemName = command.getSecondWord();
+        Item item = player.getRoom().getItem(itemName);
+        if (item == null) {
+            System.out.println("There is no item like this");
+        } else {
+            if (player.takeItem(item)) {
+                System.out.println("You took the item!");
+            } else {
+                System.out.println("You can't take this item!");
+            }
+        }
+    }
+
+    private void dropItem(Command command) {
+        if (!command.hasSecondWord()) {
+            System.out.println("What you want to drop?");
+            return;
+        }
+
+        String itemName = command.getSecondWord();
+        Item item = player.dropItem(itemName);
+        if (item == null) {
+            System.out.println("You don't have this item!");
+        } else {
+            player.getRoom().putItem(item.getName(), item.getDescription(), item.getWeight());
+            System.out.println("You dropped the item!");
+        }
     }
 }
