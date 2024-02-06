@@ -1,5 +1,8 @@
 package de.szut.zuul;
 
+import de.szut.zuul.exceptions.ItemNotFoundException;
+import de.szut.zuul.exceptions.ItemTooHeavyException;
+
 import java.util.LinkedList;
 
 public class Player {
@@ -18,13 +21,13 @@ public class Player {
         this.currentRoom = newRoom;
     }
 
-    public boolean takeItem(Item item) {
+    public void takeItem(Item item) throws ItemTooHeavyException {
         if (this.isTakePossible(item)) {
-            showStatus();
             this.items.add(item);
-            return true;
+            showStatus();
+        } else {
+            throw new ItemTooHeavyException(item.getName() + " is too heavy!");
         }
-        return false;
     }
 
     public double calculateWeight() {
@@ -39,7 +42,7 @@ public class Player {
         return this.calculateWeight() + item.getWeight() <= this.loadCapacity;
     }
 
-    public Item dropItem(String itemName) {
+    public Item dropItem(String itemName) throws ItemNotFoundException {
         for (Item item : this.items) {
             if (item.getName().equals(itemName)) {
                 this.items.remove(item);
@@ -47,7 +50,7 @@ public class Player {
                 return item;
             }
         }
-        return null;
+        throw new ItemNotFoundException("You don't own this item!");
     }
 
     public String showStatus() {
