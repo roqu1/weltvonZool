@@ -1,5 +1,8 @@
-package de.szut.zuul;
+package de.szut.zuul.gamecontrol;
 
+import de.szut.zuul.model.Item;
+import de.szut.zuul.model.Player;
+import de.szut.zuul.model.Room;
 import de.szut.zuul.exceptions.ItemNotFoundException;
 import de.szut.zuul.exceptions.ItemTooHeavyException;
 
@@ -224,6 +227,7 @@ public class Game {
             throw new ItemNotFoundException("There is no item like this");
         } else {
             try {
+                player.getRoom().removeItem(itemName);
                 player.takeItem(item);
                 System.out.println("You took the item!");
             } catch (ItemTooHeavyException e) {
